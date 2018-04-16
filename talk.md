@@ -23,7 +23,6 @@ As a result of taking this module you will be able to
 * Use one of Python's main libraries for testing (pytest)
 * Know how to prepare tests with fixtures
 * Know how to measure how code is covered by tests
-* Know how to make isolated tests with mocks
 
 ---
 
@@ -44,7 +43,7 @@ As a result of taking this module you will be able to
 
 All testing is based on the `assert` statement
 
-```
+```python
 >>> assert ...                                                                            #doctest: +SKIP
 ```
 
@@ -85,20 +84,19 @@ Same tools are used for both cases
 * An single function that uses assert
     - to compare actual vs expected result
 
-<!--
-```
->>> def slash_join_strings(s1, s2):
-...     return "/".join((s1, s2))
-
-```
--->
-
-
-```
+```python
 >>> def test_slash_join():
-...     assert slash_join_strings('abc', 'def') == 'abc/def'
+...    assert slash_join_strings('abc', 'def') == 'abc/def'
 
 ```
+
+```python
+>>> def slash_join_strings(s1, s2):
+...    return "/".join((s1, s2))
+
+```
+
+
 
 <!--
 ```
@@ -150,7 +148,7 @@ Testing a function
     - calls the function
     - `assert` that the actual output and expected output are the same
 
---
+
 
 ### Repeat
 
@@ -200,66 +198,76 @@ Testing a function
 ```
 -->
 
-Define the test
+Consider
 
-
-```
->>> def test_my_add():
-...    assert my_add(1, 1) == 2
-
-
-```
-
-Run the test
-
-
-```
->>> test_my_add()
-
-```
-
----
-
-Putting this code in a file
-
-`my.py`
-```
+```python
+#my_math.py
 def test_my_add():
-    assert my_add(1, 1) == 2
-```
+   assert my_add(1, 1) == 2
 
-execute with `py.test`
+def my_add(x, y):
+    return x - y
 
 ```
-C:\...> py.test my.py
-```
+Execute the  file with pytest
 
 * Collects everything that looks like a test
 * Executes them one by one
+
 ---
-
-Separate test code and production code
-
-
-`test_my.py`
-```
-import my
+```python
+#my_math.py
 def test_my_add():
-    assert my.add(1, 1) == 2
+   assert my_add(1, 1) == 2
+
+def my_add(x, y):
+    return x - y
+
+```
+<hr>
+```shell
+$ pytest my_math.py
+============================= test session starts ==============================
+platform linux -- Python 3.6.3, pytest-3.5.0, py-1.5.3, pluggy-0.6.0
+rootdir: /home/olav, inifile: pytest.ini
+collected 1 item
+
+my_math.py F                                                             [100%]
+
+=================================== FAILURES ===================================
+_________________________________ test_my_add __________________________________
+
+    def test_my_add():
+>      assert my_add(1, 1) == 2
+E      assert 0 == 2
+E       +  where 0 = my_add(1, 1)
+
+my_math.py:3: AssertionError
+=========================== 1 failed in 0.02 seconds ===========================
 ```
 
 
+---
+```python
+#my_math.py
+def test_my_add():
+   assert my_add(1, 1) == 2
 
-`my.py`
+def my_add(x, y):
+    return x + y
+
 ```
-def add(x, y):
-    return x +y
-```
+<hr>
+```shell
+$ pytest my_math.py
+============================= test session starts ==============================
+platform linux -- Python 3.6.3, pytest-3.5.0, py-1.5.3, pluggy-0.6.0
+rootdir: /home/olav, inifile: pytest.ini
+collected 1 item
 
-Run the test
+my_math.py .                                                             [100%]
 
-```bash
-C:\Users\...> py.test test_my.py
+=========================== 1 passed in 0.00 seconds ===========================
 ```
 
 
@@ -316,30 +324,120 @@ Open in browser
 
 ---
 
-## Faking it with mocks
+## Fixtures
 
----
+`test_1.py`
+```
+import pytest
 
-## nose
+def setup():
+    print('         setup')
 
-### Another testing framework
+def setup_function():
+    print('\n   setup_function')
 
-* pytests older cousin
-* Still used a lot but not developed so much
-* Supports debugging and coverage
-* `nosetests` works in many ways identical to `py.test`
+def setup_module():
+    print('\nsetup_module')
 
+def teardown():
+    print('\n         teardown')
+
+def teardown_function():
+    print('   teardown_function')
+
+def teardown_module():
+    print('teardown_module')
 
 ```
-nosetests test_leap.py
+
+setup and teardown functions that are run before and after each test
+
+---
+```
+C:\Users\...> py.test test_1.py -vs
+```
+```
+test_1.py::test_f 
+setup_module
+
+   setup_function
+         setup
+PASSED
+         teardown
+   teardown_function
+
+test_1.py::test_g 
+   setup_function
+         setup
+PASSED
+         teardown
+   teardown_function
+teardown_module
+
+```
+---
+`test_2.py`
 ```
 
+@pytest.fixture
+def before():
+    print('      before')
+    yield None
+    print('      after')
+
+@pytest.fixture(params=[1,2])
+def return_value(request):
+    print('      return_value')
+    return = 3.14*request.param
+
+def test_this(before):
+    print('            ', end='')
+
+def test_that(return_value):
+    print('            ', end='')
+    print(return_value, end='')
+
+```
+
+- more advanced pytest features
+
+---
+```
+C:\Users\...> py.test test_2.py -vs
+```
+```
+test_2.py::test_this 
+setup_module
+
+   setup_function
+      before
+         setup
+            PASSED
+         teardown
+      after
+   teardown_function
+
+test_2.py::test_that[1] 
+   setup_function
+      return_value
+         setup
+            3.14PASSED
+         teardown
+   teardown_function
+
+test_2.py::test_that[2] 
+   setup_function
+      return_value
+         setup
+            6.28PASSED
+         teardown
+   teardown_function
+teardown_module
+
+```
 ---
 
-### Nosetest and coverage
 
-
----
 
 
 ## The unittest module
@@ -487,11 +585,14 @@ OK
 
 ---
 
-### Recommendation
+### Summary
 
-* Fine to ``doctest`` for small illustrations, if any
-* Use either functions ``unittest`` classes to code your tests, 
-* Use ``nosetests`` or `py.test` to execute your tests, optionally with debugging and coverage
+* The `pytest` library is the most modern testing framework for Python
+    - Easy to get started with simple test functions
+* `nose` is a similar older library
+* The standard library contains `unittest` library
+    - Requires knowledge of classes to code your tests, 
+* Fine to ``doctest`` for small illustrations
 
 ---
 
@@ -509,6 +610,6 @@ OK
 * http://pythontesting.net
 * http://mathieu.agopian.info/presentations/2015_06_djangocon_europe
 * http://katyhuff.github.io/python-testing
-* http://amazon.com:  <tt>148 results for Books : "tdd" </tt>
+* <a href="https://www.amazon.com/s/ref=nb_sb_noss_1?url=search-alias%3Dstripbooks&field-keywords=tdd&rh=n%3A283155%2Ck%3Atdd">Amazon search:"TDD"</a> > 100 books
 * http://pyvideo.org: <tt>About 80 results</tt>
 
