@@ -273,7 +273,7 @@ my_math.py .                                                             [100%]
 
 ---
 
-## Example
+## Exercise
 
 ```
 >>> def test_leap_year():
@@ -286,10 +286,11 @@ my_math.py .                                                             [100%]
 ...     assert is_leap_year(1600) == True
 
 ```
-```
->>> test_leap_year()
 
-```
+* Save in a file `test_leap.py`
+* Write code in `leap.py`
+* Verify with pytest
+
 ---
 
 ## Test coverage
@@ -581,7 +582,7 @@ OK
          self.assertAlmostEqual(res, 0.333333, 6)
 ```
 
-* see also http://docs.python.org/2/library/unittest.html 
+* see also http://docs.python.org/3/library/unittest.html 
 
 ---
 
