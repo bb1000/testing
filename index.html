@@ -251,7 +251,7 @@ in terminal solve
 e.g.
 
 execute by hand first
-then with py.test
+then with pytest
 --&gt;
 
 * Several test functions may be collected in a file
@@ -412,7 +412,7 @@ my_math.py .                                                             [100%]
 
 ---
 
-## Example
+## Exercise
 
 ```
 &gt;&gt;&gt; def test_leap_year():
@@ -425,10 +425,11 @@ my_math.py .                                                             [100%]
 ...     assert is_leap_year(1600) == True
 
 ```
-```
-&gt;&gt;&gt; test_leap_year()
 
-```
+* Save in a file `test_leap.py`
+* Write code in `leap.py`
+* Verify with pytest
+
 ---
 
 ## Test coverage
@@ -441,19 +442,19 @@ How it works (pytest)
 * Summary
 
 ```
-C:\Users\...&gt; py.test test_my.py --cov my
+C:\Users\...&gt; pytest test_my.py --cov my
 ```
 
 * Line info
 ```
-C:\Users\...&gt; py.test test_my.py --cov my --cov-report=term-missing
+C:\Users\...&gt; pytest test_my.py --cov my --cov-report=term-missing
 ```
 ---
 
 * HTML report
 
 ```
-C:\Users\...&gt; py.test test_my.py --cov my --cov-report=html
+C:\Users\...&gt; pytest test_my.py --cov my --cov-report=html
 ```
 Open in browser
 
@@ -493,7 +494,7 @@ setup and teardown functions that are run before and after each test
 
 ---
 ```
-C:\Users\...&gt; py.test test_1.py -vs
+C:\Users\...&gt; pytest test_1.py -vs
 ```
 ```
 test_1.py::test_f 
@@ -542,7 +543,7 @@ def test_that(return_value):
 
 ---
 ```
-C:\Users\...&gt; py.test test_2.py -vs
+C:\Users\...&gt; pytest test_2.py -vs
 ```
 ```
 test_2.py::test_this 
@@ -720,7 +721,7 @@ OK
          self.assertAlmostEqual(res, 0.333333, 6)
 ```
 
-* see also http://docs.python.org/2/library/unittest.html 
+* see also http://docs.python.org/3/library/unittest.html 
 
 ---
 
