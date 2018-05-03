@@ -112,7 +112,7 @@ in terminal solve
 e.g.
 
 execute by hand first
-then with py.test
+then with pytest
 -->
 
 * Several test functions may be collected in a file
@@ -303,19 +303,19 @@ How it works (pytest)
 * Summary
 
 ```
-C:\Users\...> py.test test_my.py --cov my
+C:\Users\...> pytest test_my.py --cov my
 ```
 
 * Line info
 ```
-C:\Users\...> py.test test_my.py --cov my --cov-report=term-missing
+C:\Users\...> pytest test_my.py --cov my --cov-report=term-missing
 ```
 ---
 
 * HTML report
 
 ```
-C:\Users\...> py.test test_my.py --cov my --cov-report=html
+C:\Users\...> pytest test_my.py --cov my --cov-report=html
 ```
 Open in browser
 
@@ -355,7 +355,7 @@ setup and teardown functions that are run before and after each test
 
 ---
 ```
-C:\Users\...> py.test test_1.py -vs
+C:\Users\...> pytest test_1.py -vs
 ```
 ```
 test_1.py::test_f 
@@ -404,7 +404,7 @@ def test_that(return_value):
 
 ---
 ```
-C:\Users\...> py.test test_2.py -vs
+C:\Users\...> pytest test_2.py -vs
 ```
 ```
 test_2.py::test_this 
