@@ -349,6 +349,11 @@ def teardown_function():
 def teardown_module():
     print('teardown_module')
 
+def test_f():
+    pass
+
+def test_g():
+    pass
 ```
 
 setup and teardown functions that are run before and after each test
@@ -389,7 +394,7 @@ def before():
 @pytest.fixture(params=[1,2])
 def return_value(request):
     print('      return_value')
-    return = 3.14*request.param
+    return 3.14*request.param
 
 def test_this(before):
     print('            ', end='')
@@ -399,41 +404,19 @@ def test_that(return_value):
     print(return_value, end='')
 
 ```
-
-- more advanced pytest features
-
----
 ```
 C:\Users\...> pytest test_2.py -vs
-```
-```
-test_2.py::test_this 
-setup_module
+...
+collected 3 items                                                            
 
-   setup_function
-      before
-         setup
-            PASSED
-         teardown
-      after
-   teardown_function
+test_2.py::::test_this       before   
+            PASSED      after         
 
-test_2.py::test_that[1] 
-   setup_function
-      return_value
-         setup
-            3.14PASSED
-         teardown
-   teardown_function
+test_2.py::::test_that[1]       return_value                                 
+            3.14PASSED                
+test_2.py::::test_that[2]       return_value                                 
+            6.28PASSED                
 
-test_2.py::test_that[2] 
-   setup_function
-      return_value
-         setup
-            6.28PASSED
-         teardown
-   teardown_function
-teardown_module
 
 ```
 ---
