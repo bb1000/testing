@@ -329,19 +329,12 @@ Open in browser
 
 `test_1.py`
 ```
-import pytest
-
-def setup():
-    print('         setup')
 
 def setup_function():
     print('\n   setup_function')
 
 def setup_module():
     print('\nsetup_module')
-
-def teardown():
-    print('\n         teardown')
 
 def teardown_function():
     print('   teardown_function')
@@ -359,27 +352,27 @@ def test_g():
 setup and teardown functions that are run before and after each test
 
 ---
+~~~
+pytest -v test_1.py
+============================== test session starts ==============================
+...
+test_1.py::test_f PASSED                                                  [ 50%]
+test_1.py::test_g PASSED                                                  [100%]
+============================== test session starts ==============================
+
+~~~
 ```
-C:\Users\...> pytest test_1.py -vs
-```
-```
+$ pytest test_1.py --setup-show
 test_1.py::test_f 
-setup_module
-
-   setup_function
-         setup
-PASSED
-         teardown
-   teardown_function
-
+    SETUP    M _Module__pytest_setup_module
+        SETUP    F _Module__pytest_setup_function
+        test_1.py::test_f (fixtures used: _Module__pytest_setup_function, _Module__pytest_setup_module)PASSED
+        TEARDOWN F _Module__pytest_setup_function
 test_1.py::test_g 
-   setup_function
-         setup
-PASSED
-         teardown
-   teardown_function
-teardown_module
-
+        SETUP    F _Module__pytest_setup_function
+        test_1.py::test_g (fixtures used: _Module__pytest_setup_function, _Module__pytest_setup_module)PASSED
+        TEARDOWN F _Module__pytest_setup_function
+    TEARDOWN M _Module__pytest_setup_module
 ```
 ---
 `test_2.py`
@@ -482,6 +475,16 @@ test_2.py::::test_that[2]       return_value
 
     if __name__ == "__main__":
         unittest.main()
+
+```
+compare  with
+```python
+#my_math.py
+def test_add():
+    assert calculate.add(1, 1) == 1
+
+def test_sub():
+    assert calculate.sub(1, 1) == 0
 
 ```
 ---
