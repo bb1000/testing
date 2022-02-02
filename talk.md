@@ -3,9 +3,7 @@
 </script>
 # Testing
 
-## 
-
-BB1000 Programming in Python
+## BB1000 Programming in Python
 KTH
 
 ---
