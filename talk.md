@@ -10,8 +10,6 @@ KTH
 
 layout: false
 
-# Testing
-
 ## Learning goals
 
 As a result of taking this module you will be able to
