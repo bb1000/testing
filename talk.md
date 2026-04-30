@@ -1,10 +1,4 @@
-<script type="text/javascript"
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 # Testing
-
-## BB1000 Programming in Python
-KTH
 
 ---
 
@@ -165,7 +159,7 @@ Testing a function
 
 * external
     - pytest: a commonly used third-party tool for running tests
-    - nose: same but older
+    - nose: similar but older (not supported anymore)
 
 * builtin
     - unittest: a module of the standard python library to provide advanced testing
@@ -211,6 +205,7 @@ Execute the  file with pytest
 * Executes them one by one
 
 ---
+
 ```python
 #my_math.py
 def test_my_add():
@@ -220,7 +215,9 @@ def my_add(x, y):
     return x - y
 
 ```
+
 <hr>
+
 ```shell
 $ pytest my_math.py
 ============================= test session starts ==============================
@@ -242,8 +239,8 @@ my_math.py:3: AssertionError
 =========================== 1 failed in 0.02 seconds ===========================
 ```
 
-
 ---
+
 ```python
 #my_math.py
 def test_my_add():
@@ -253,7 +250,9 @@ def my_add(x, y):
     return x + y
 
 ```
+
 <hr>
+
 ```shell
 $ pytest my_math.py
 ============================= test session starts ==============================
@@ -272,14 +271,17 @@ my_math.py .                                                             [100%]
 ## Exercise
 
 ```
->>> def test_leap_year():
-...     assert is_leap_year(2000) == True
-...     assert is_leap_year(1999) == False
-...     assert is_leap_year(1998) == False
-...     assert is_leap_year(1996) == True
-...     assert is_leap_year(1900) == False
-...     assert is_leap_year(1800) == False
-...     assert is_leap_year(1600) == True
+# test_leap.py
+from leap import is_leap_year
+
+def test_leap_year():
+    assert is_leap_year(2000) == True
+    assert is_leap_year(1999) == False
+    assert is_leap_year(1998) == False
+    assert is_leap_year(1996) == True
+    assert is_leap_year(1900) == False
+    assert is_leap_year(1800) == False
+    assert is_leap_year(1600) == True
 
 ```
 
@@ -299,19 +301,19 @@ How it works (pytest)
 * Summary
 
 ```
-C:\Users\...> pytest test_my.py --cov my
+$ pytest test_my.py --cov my
 ```
 
 * Line info
 ```
-C:\Users\...> pytest test_my.py --cov my --cov-report=term-missing
+$ pytest test_my.py --cov my --cov-report=term-missing
 ```
 ---
 
 * HTML report
 
 ```
-C:\Users\...> pytest test_my.py --cov my --cov-report=html
+$ pytest test_my.py --cov my --cov-report=html
 ```
 Open in browser
 
